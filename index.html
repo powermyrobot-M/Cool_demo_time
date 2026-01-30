@@ -1,0 +1,2803 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>REEC - Smart Receipt Management for Nairobi</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
+    <style>
+
+        :root {
+
+            --primary: #1a6b3c;
+
+            --primary-light: #2a8c55;
+
+            --secondary: #f9a825;
+
+            --secondary-light: #ffb74d;
+
+            --dark: #1e3a2c;
+
+            --light: #f5f7fa;
+
+            --gray: #e0e0e0;
+
+            --gray-dark: #757575;
+
+            --danger: #e74c3c;
+
+            --success: #27ae60;
+
+            --nairobi-blue: #0077b6;
+
+            --nairobi-red: #d90429;
+
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+            --radius: 8px;
+
+            --transition: all 0.3s ease;
+
+        }
+
+        * {
+
+            margin: 0;
+
+            padding: 0;
+
+            box-sizing: border-box;
+
+        }
+
+        body {
+
+            font-family: 'Nunito', sans-serif;
+
+            background-color: var(--light);
+
+            color: var(--dark);
+
+            line-height: 1.6;
+
+        }
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1200px;
+
+            margin: 0 auto;
+
+            padding: 0 20px;
+
+        }
+
+        /* Header Styles */
+
+        header {
+
+            background-color: white;
+
+            box-shadow: var(--shadow);
+
+            position: sticky;
+
+            top: 0;
+
+            z-index: 100;
+
+        }
+
+        .header-container {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 15px 0;
+
+        }
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+        .logo-icon {
+
+            color: var(--primary);
+
+            font-size: 28px;
+
+        }
+
+        .logo-text {
+
+            font-family: 'Poppins', sans-serif;
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+            color: var(--primary);
+
+        }
+
+        .logo-text span {
+
+            color: var(--secondary);
+
+        }
+
+        .nav-links {
+
+            display: flex;
+
+            gap: 30px;
+
+        }
+
+        .nav-link {
+
+            text-decoration: none;
+
+            color: var(--dark);
+
+            font-weight: 600;
+
+            padding: 8px 0;
+
+            position: relative;
+
+            transition: var(--transition);
+
+        }
+
+        .nav-link:hover {
+
+            color: var(--primary);
+
+        }
+
+        .nav-link.active::after {
+
+            content: '';
+
+            position: absolute;
+
+            bottom: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 3px;
+
+            background-color: var(--secondary);
+
+            border-radius: 2px;
+
+        }
+
+        .user-menu {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 20px;
+
+        }
+
+        .user-info {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+        .user-avatar {
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            background-color: var(--primary);
+
+            color: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-weight: bold;
+
+        }
+
+        .btn {
+
+            padding: 10px 20px;
+
+            border-radius: var(--radius);
+
+            border: none;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: var(--transition);
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            font-family: 'Nunito', sans-serif;
+
+        }
+
+        .btn-primary {
+
+            background-color: var(--primary);
+
+            color: white;
+
+        }
+
+        .btn-primary:hover {
+
+            background-color: var(--primary-light);
+
+        }
+
+        .btn-secondary {
+
+            background-color: var(--secondary);
+
+            color: var(--dark);
+
+        }
+
+        .btn-secondary:hover {
+
+            background-color: var(--secondary-light);
+
+        }
+
+        .btn-outline {
+
+            background-color: transparent;
+
+            border: 2px solid var(--primary);
+
+            color: var(--primary);
+
+        }
+
+        .btn-outline:hover {
+
+            background-color: var(--primary);
+
+            color: white;
+
+        }
+
+        /* Hero Section */
+
+        .hero {
+
+            padding: 80px 0;
+
+            background: linear-gradient(135deg, rgba(26, 107, 60, 0.1) 0%, rgba(249, 168, 37, 0.1) 100%);
+
+            border-radius: 0 0 40px 40px;
+
+            margin-bottom: 40px;
+
+        }
+
+        .hero-content {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 40px;
+
+        }
+
+        .hero-text {
+
+            flex: 1;
+
+        }
+
+        .hero-title {
+
+            font-size: 48px;
+
+            font-weight: 800;
+
+            line-height: 1.2;
+
+            margin-bottom: 20px;
+
+            color: var(--dark);
+
+        }
+
+        .hero-title span {
+
+            color: var(--primary);
+
+        }
+
+        .hero-subtitle {
+
+            font-size: 20px;
+
+            color: var(--gray-dark);
+
+            margin-bottom: 30px;
+
+        }
+
+        .hero-image {
+
+            flex: 1;
+
+            text-align: center;
+
+        }
+
+        .hero-img {
+
+            max-width: 100%;
+
+            border-radius: var(--radius);
+
+            box-shadow: var(--shadow);
+
+        }
+
+        .features {
+
+            display: flex;
+
+            gap: 20px;
+
+            margin-top: 30px;
+
+        }
+
+        .feature {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+        .feature-icon {
+
+            background-color: var(--primary);
+
+            color: white;
+
+            width: 40px;
+
+            height: 40px;
+
+            border-radius: 50%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+        /* Main Content */
+
+        .main-content {
+
+            padding: 40px 0;
+
+        }
+
+        .section-title {
+
+            font-size: 32px;
+
+            margin-bottom: 30px;
+
+            color: var(--dark);
+
+            text-align: center;
+
+        }
+
+        .section-title span {
+
+            color: var(--primary);
+
+        }
+
+        .dashboard {
+
+            display: grid;
+
+            grid-template-columns: 300px 1fr;
+
+            gap: 30px;
+
+        }
+
+        /* Sidebar */
+
+        .sidebar {
+
+            background-color: white;
+
+            border-radius: var(--radius);
+
+            padding: 25px;
+
+            box-shadow: var(--shadow);
+
+            height: fit-content;
+
+        }
+
+        .sidebar-title {
+
+            font-size: 20px;
+
+            margin-bottom: 20px;
+
+            color: var(--primary);
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+        .sidebar-menu {
+
+            list-style: none;
+
+        }
+
+        .sidebar-item {
+
+            margin-bottom: 15px;
+
+        }
+
+        .sidebar-link {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 12px 15px;
+
+            text-decoration: none;
+
+            color: var(--dark);
+
+            border-radius: var(--radius);
+
+            transition: var(--transition);
+
+        }
+
+        .sidebar-link:hover, .sidebar-link.active {
+
+            background-color: rgba(26, 107, 60, 0.1);
+
+            color: var(--primary);
+
+        }
+
+        /* Receipt Cards */
+
+        .receipts-container {
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+
+            gap: 25px;
+
+        }
+
+        .receipt-card {
+
+            background-color: white;
+
+            border-radius: var(--radius);
+
+            padding: 25px;
+
+            box-shadow: var(--shadow);
+
+            transition: var(--transition);
+
+            border-left: 5px solid var(--primary);
+
+        }
+
+        .receipt-card:hover {
+
+            transform: translateY(-5px);
+
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+
+        }
+
+        .receipt-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 15px;
+
+        }
+
+        .receipt-type {
+
+            display: inline-block;
+
+            padding: 5px 12px;
+
+            border-radius: 20px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+        }
+
+        .type-banking {
+
+            background-color: rgba(0, 119, 182, 0.1);
+
+            color: var(--nairobi-blue);
+
+        }
+
+        .type-shopping {
+
+            background-color: rgba(249, 168, 37, 0.1);
+
+            color: #b37400;
+
+        }
+
+        .type-school {
+
+            background-color: rgba(217, 4, 41, 0.1);
+
+            color: var(--nairobi-red);
+
+        }
+
+        .type-other {
+
+            background-color: rgba(39, 174, 96, 0.1);
+
+            color: var(--success);
+
+        }
+
+        .receipt-date {
+
+            color: var(--gray-dark);
+
+            font-size: 14px;
+
+        }
+
+        .receipt-merchant {
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            margin-bottom: 10px;
+
+            color: var(--dark);
+
+        }
+
+        .receipt-amount {
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            color: var(--primary);
+
+            margin-bottom: 15px;
+
+        }
+
+        .receipt-actions {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 20px;
+
+        }
+
+        /* Upload Section */
+
+        .upload-section {
+
+            background-color: white;
+
+            border-radius: var(--radius);
+
+            padding: 30px;
+
+            box-shadow: var(--shadow);
+
+            margin-bottom: 40px;
+
+        }
+
+        .upload-area {
+
+            border: 3px dashed var(--gray);
+
+            border-radius: var(--radius);
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            cursor: pointer;
+
+            transition: var(--transition);
+
+            margin-bottom: 20px;
+
+        }
+
+        .upload-area:hover {
+
+            border-color: var(--primary);
+
+            background-color: rgba(26, 107, 60, 0.05);
+
+        }
+
+        .upload-icon {
+
+            font-size: 60px;
+
+            color: var(--primary);
+
+            margin-bottom: 20px;
+
+        }
+
+        .upload-text {
+
+            font-size: 18px;
+
+            margin-bottom: 10px;
+
+        }
+
+        .upload-subtext {
+
+            color: var(--gray-dark);
+
+            margin-bottom: 20px;
+
+        }
+
+        /* Authentication Modals */
+
+        .modal {
+
+            display: none;
+
+            position: fixed;
+
+            top: 0;
+
+            left: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            background-color: rgba(0, 0, 0, 0.7);
+
+            z-index: 1000;
+
+            justify-content: center;
+
+            align-items: center;
+
+        }
+
+        .modal.active {
+
+            display: flex;
+
+        }
+
+        .modal-content {
+
+            background-color: white;
+
+            border-radius: var(--radius);
+
+            width: 100%;
+
+            max-width: 500px;
+
+            padding: 40px;
+
+            box-shadow: var(--shadow);
+
+            position: relative;
+
+        }
+
+        .modal-close {
+
+            position: absolute;
+
+            top: 20px;
+
+            right: 20px;
+
+            background: none;
+
+            border: none;
+
+            font-size: 24px;
+
+            cursor: pointer;
+
+            color: var(--gray-dark);
+
+        }
+
+        .modal-title {
+
+            font-size: 28px;
+
+            margin-bottom: 10px;
+
+            color: var(--primary);
+
+        }
+
+        .modal-subtitle {
+
+            color: var(--gray-dark);
+
+            margin-bottom: 30px;
+
+        }
+
+        .auth-options {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 15px;
+
+            margin-bottom: 30px;
+
+        }
+
+        .auth-btn {
+
+            width: 100%;
+
+            justify-content: center;
+
+            padding: 15px;
+
+        }
+
+        .btn-google {
+
+            background-color: #db4437;
+
+            color: white;
+
+        }
+
+        .btn-google:hover {
+
+            background-color: #c33d2e;
+
+        }
+
+        .btn-biometric {
+
+            background-color: var(--primary);
+
+            color: white;
+
+        }
+
+        .btn-biometric:hover {
+
+            background-color: var(--primary-light);
+
+        }
+
+        .auth-divider {
+
+            text-align: center;
+
+            margin: 20px 0;
+
+            position: relative;
+
+        }
+
+        .auth-divider::before {
+
+            content: '';
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 0;
+
+            width: 45%;
+
+            height: 1px;
+
+            background-color: var(--gray);
+
+        }
+
+        .auth-divider::after {
+
+            content: '';
+
+            position: absolute;
+
+            top: 50%;
+
+            right: 0;
+
+            width: 45%;
+
+            height: 1px;
+
+            background-color: var(--gray);
+
+        }
+
+        .form-group {
+
+            margin-bottom: 20px;
+
+        }
+
+        .form-label {
+
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: 600;
+
+        }
+
+        .form-input {
+
+            width: 100%;
+
+            padding: 12px 15px;
+
+            border: 2px solid var(--gray);
+
+            border-radius: var(--radius);
+
+            font-family: 'Nunito', sans-serif;
+
+            font-size: 16px;
+
+            transition: var(--transition);
+
+        }
+
+        .form-input:focus {
+
+            outline: none;
+
+            border-color: var(--primary);
+
+        }
+
+        .otp-inputs {
+
+            display: flex;
+
+            gap: 10px;
+
+            justify-content: center;
+
+            margin: 20px 0;
+
+        }
+
+        .otp-input {
+
+            width: 50px;
+
+            height: 60px;
+
+            text-align: center;
+
+            font-size: 24px;
+
+            border: 2px solid var(--gray);
+
+            border-radius: var(--radius);
+
+        }
+
+        .otp-input:focus {
+
+            border-color: var(--primary);
+
+            outline: none;
+
+        }
+
+        /* Receipt View Modal */
+
+        .receipt-modal {
+
+            max-width: 800px;
+
+        }
+
+        .receipt-view {
+
+            background-color: #f9f9f9;
+
+            border-radius: var(--radius);
+
+            padding: 30px;
+
+            margin-bottom: 30px;
+
+        }
+
+        .receipt-view-header {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+            padding-bottom: 20px;
+
+            border-bottom: 2px dashed var(--gray);
+
+        }
+
+        .receipt-logo {
+
+            font-size: 40px;
+
+            color: var(--primary);
+
+            margin-bottom: 10px;
+
+        }
+
+        .receipt-view-title {
+
+            font-size: 28px;
+
+            color: var(--dark);
+
+        }
+
+        .receipt-detail {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-bottom: 15px;
+
+            padding-bottom: 10px;
+
+            border-bottom: 1px solid var(--gray);
+
+        }
+
+        .receipt-detail-label {
+
+            font-weight: 600;
+
+            color: var(--gray-dark);
+
+        }
+
+        .receipt-detail-value {
+
+            font-weight: 700;
+
+        }
+
+        .receipt-total {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            margin-top: 20px;
+
+            padding-top: 20px;
+
+            border-top: 3px double var(--dark);
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            color: var(--primary);
+
+        }
+
+        /* Footer */
+
+        footer {
+
+            background-color: var(--dark);
+
+            color: white;
+
+            padding: 60px 0 30px;
+
+            margin-top: 80px;
+
+        }
+
+        .footer-content {
+
+            display: grid;
+
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+            gap: 40px;
+
+            margin-bottom: 40px;
+
+        }
+
+        .footer-column h3 {
+
+            font-size: 22px;
+
+            margin-bottom: 20px;
+
+            color: var(--secondary);
+
+        }
+
+        .footer-links {
+
+            list-style: none;
+
+        }
+
+        .footer-link {
+
+            margin-bottom: 10px;
+
+        }
+
+        .footer-link a {
+
+            color: #ddd;
+
+            text-decoration: none;
+
+            transition: var(--transition);
+
+        }
+
+        .footer-link a:hover {
+
+            color: var(--secondary);
+
+            padding-left: 5px;
+
+        }
+
+        .copyright {
+
+            text-align: center;
+
+            padding-top: 30px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+            color: #aaa;
+
+            font-size: 14px;
+
+        }
+
+        /* Responsive Design */
+
+        @media (max-width: 992px) {
+
+            .dashboard {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            
+
+            .hero-content {
+
+                flex-direction: column;
+
+            }
+
+            
+
+            .hero-title {
+
+                font-size: 36px;
+
+            }
+
+        }
+
+        @media (max-width: 768px) {
+
+            .nav-links {
+
+                display: none;
+
+            }
+
+            
+
+            .header-container {
+
+                padding: 15px 0;
+
+            }
+
+            
+
+            .receipts-container {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            
+
+            .features {
+
+                flex-direction: column;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Header -->
+
+    <header>
+
+        <div class="container header-container">
+
+            <div class="logo">
+
+                <div class="logo-icon">
+
+                    <i class="fas fa-receipt"></i>
+
+                </div>
+
+                <div class="logo-text">RE<span>EC</span></div>
+
+            </div>
+
+            
+
+            <nav class="nav-links">
+
+                <a href="#" class="nav-link active">Home</a>
+
+                <a href="#dashboard" class="nav-link">Dashboard</a>
+
+                <a href="#upload" class="nav-link">Upload</a>
+
+                <a href="#features" class="nav-link">Features</a>
+
+                <a href="#about" class="nav-link">About</a>
+
+            </nav>
+
+            
+
+            <div class="user-menu">
+
+                <div class="user-info" id="user-info">
+
+                    <div class="user-avatar" id="user-avatar">G</div>
+
+                    <div>
+
+                        <div id="user-name">Guest</div>
+
+                        <div id="user-status" style="font-size: 12px; color: var(--gray-dark);">Not signed in</div>
+
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary" id="auth-btn">
+
+                    <i class="fas fa-sign-in-alt"></i> Sign In
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- Hero Section -->
+
+    <section class="hero">
+
+        <div class="container hero-content">
+
+            <div class="hero-text">
+
+                <h1 class="hero-title">Manage Your <span>Receipts</span> The Nairobi Way</h1>
+
+                <p class="hero-subtitle">REEC helps you securely store and organize all your receipts - from banking, shopping, school fees, and more. Once uploaded, receipts become read-only for permanent record keeping.</p>
+
+                
+
+                <div class="features">
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <i class="fas fa-fingerprint"></i>
+
+                        </div>
+
+                        <div>Biometric Security</div>
+
+                    </div>
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <i class="fas fa-mobile-alt"></i>
+
+                        </div>
+
+                        <div>OTP Verification</div>
+
+                    </div>
+
+                    <div class="feature">
+
+                        <div class="feature-icon">
+
+                            <i class="fas fa-cloud-upload-alt"></i>
+
+                        </div>
+
+                        <div>Easy Upload</div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <button class="btn btn-secondary" style="margin-top: 30px;">
+
+                    <i class="fas fa-download"></i> Get Browser Extension
+
+                </button>
+
+            </div>
+
+            
+
+            <div class="hero-image">
+
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&h=400&q=80" alt="Nairobi receipt management" class="hero-img">
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- Main Content -->
+
+    <div class="container main-content">
+
+        <!-- Upload Section -->
+
+        <section id="upload" class="upload-section">
+
+            <h2 class="section-title">Upload <span>Receipt</span></h2>
+
+            <div class="upload-area" id="upload-area">
+
+                <div class="upload-icon">
+
+                    <i class="fas fa-cloud-upload-alt"></i>
+
+                </div>
+
+                <div class="upload-text">Drag & Drop your receipt here</div>
+
+                <div class="upload-subtext">or click to browse files (PDF, JPG, PNG up to 10MB)</div>
+
+                <div class="btn btn-outline">Select File</div>
+
+            </div>
+
+            <div style="text-align: center;">
+
+                <div class="btn btn-primary" id="upload-btn">
+
+                    <i class="fas fa-upload"></i> Upload Receipt
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- Dashboard Section -->
+
+        <section id="dashboard">
+
+            <h2 class="section-title">Your <span>Receipts</span></h2>
+
+            
+
+            <div class="dashboard">
+
+                <!-- Sidebar Filters -->
+
+                <div class="sidebar">
+
+                    <h3 class="sidebar-title">
+
+                        <i class="fas fa-filter"></i> Filter Receipts
+
+                    </h3>
+
+                    <ul class="sidebar-menu">
+
+                        <li class="sidebar-item">
+
+                            <a href="#" class="sidebar-link active" data-filter="all">
+
+                                <i class="fas fa-receipt"></i> All Receipts
+
+                                <span style="margin-left: auto;" id="count-all">12</span>
+
+                            </a>
+
+                        </li>
+
+                        <li class="sidebar-item">
+
+                            <a href="#" class="sidebar-link" data-filter="banking">
+
+                                <i class="fas fa-university"></i> Banking
+
+                                <span style="margin-left: auto;" id="count-banking">4</span>
+
+                            </a>
+
+                        </li>
+
+                        <li class="sidebar-item">
+
+                            <a href="#" class="sidebar-link" data-filter="shopping">
+
+                                <i class="fas fa-shopping-cart"></i> Shopping
+
+                                <span style="margin-left: auto;" id="count-shopping">5</span>
+
+                            </a>
+
+                        </li>
+
+                        <li class="sidebar-item">
+
+                            <a href="#" class="sidebar-link" data-filter="school">
+
+                                <i class="fas fa-graduation-cap"></i> School Fees
+
+                                <span style="margin-left: auto;" id="count-school">2</span>
+
+                            </a>
+
+                        </li>
+
+                        <li class="sidebar-item">
+
+                            <a href="#" class="sidebar-link" data-filter="other">
+
+                                <i class="fas fa-file-invoice"></i> Other
+
+                                <span style="margin-left: auto;" id="count-other">1</span>
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                    
+
+                    <h3 class="sidebar-title" style="margin-top: 30px;">
+
+                        <i class="fas fa-chart-bar"></i> Statistics
+
+                    </h3>
+
+                    <div style="margin-top: 15px;">
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+
+                            <span>Total Receipts:</span>
+
+                            <span id="total-receipts">12</span>
+
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+
+                            <span>Total Amount:</span>
+
+                            <span id="total-amount">KSh 248,750</span>
+
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+
+                            <span>This Month:</span>
+
+                            <span id="month-amount">KSh 42,500</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <!-- Receipts Grid -->
+
+                <div class="receipts-container" id="receipts-container">
+
+                    <!-- Receipt cards will be dynamically generated here -->
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <!-- Authentication Modal -->
+
+    <div class="modal" id="auth-modal">
+
+        <div class="modal-content">
+
+            <button class="modal-close" id="auth-close">&times;</button>
+
+            <h2 class="modal-title">Welcome to REEC</h2>
+
+            <p class="modal-subtitle">Sign in to manage your receipts securely</p>
+
+            
+
+            <div class="auth-options">
+
+                <button class="btn btn-google auth-btn" id="google-auth-btn">
+
+                    <i class="fab fa-google"></i> Continue with Google
+
+                </button>
+
+                <button class="btn btn-biometric auth-btn" id="biometric-auth-btn">
+
+                    <i class="fas fa-fingerprint"></i> Use Biometric Login
+
+                </button>
+
+            </div>
+
+            
+
+            <div class="auth-divider">or use phone number</div>
+
+            
+
+            <div id="phone-auth-form">
+
+                <div class="form-group">
+
+                    <label class="form-label" for="phone">Phone Number (Kenyan)</label>
+
+                    <input type="tel" id="phone" class="form-input" placeholder="e.g. 0712 345 678" value="+254">
+
+                </div>
+
+                <button class="btn btn-primary auth-btn" id="send-otp-btn">
+
+                    <i class="fas fa-sms"></i> Send OTP via SMS
+
+                </button>
+
+            </div>
+
+            
+
+            <div id="otp-verification" style="display: none;">
+
+                <p>Enter the 6-digit OTP sent to your phone</p>
+
+                <div class="otp-inputs">
+
+                    <input type="text" maxlength="1" class="otp-input" data-index="0">
+
+                    <input type="text" maxlength="1" class="otp-input" data-index="1">
+
+                    <input type="text" maxlength="1" class="otp-input" data-index="2">
+
+                    <input type="text" maxlength="1" class="otp-input" data-index="3">
+
+                    <input type="text" maxlength="1" class="otp-input" data-index="4">
+
+                    <input type="text" maxlength="1" class="otp-input" data-index="5">
+
+                </div>
+
+                <button class="btn btn-primary auth-btn" id="verify-otp-btn">
+
+                    <i class="fas fa-check-circle"></i> Verify OTP
+
+                </button>
+
+                <p style="text-align: center; margin-top: 15px; font-size: 14px;">
+
+                    Didn't receive code? <a href="#" id="resend-otp">Resend</a>
+
+                </p>
+
+            </div>
+
+            
+
+            <p style="text-align: center; margin-top: 20px; font-size: 14px; color: var(--gray-dark);">
+
+                By signing in, you agree to our Terms and Privacy Policy
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- Receipt View Modal -->
+
+    <div class="modal" id="receipt-modal">
+
+        <div class="modal-content receipt-modal">
+
+            <button class="modal-close" id="receipt-close">&times;</button>
+
+            
+
+            <div class="receipt-view">
+
+                <div class="receipt-view-header">
+
+                    <div class="receipt-logo">
+
+                        <i class="fas fa-receipt"></i>
+
+                    </div>
+
+                    <h2 class="receipt-view-title" id="receipt-modal-title">Nakumatt Supermarket</h2>
+
+                    <p id="receipt-modal-date">12th October 2023, 14:30</p>
+
+                </div>
+
+                
+
+                <div class="receipt-details">
+
+                    <div class="receipt-detail">
+
+                        <span class="receipt-detail-label">Receipt ID:</span>
+
+                        <span class="receipt-detail-value" id="receipt-id">REC-2023-0012</span>
+
+                    </div>
+
+                    <div class="receipt-detail">
+
+                        <span class="receipt-detail-label">Merchant:</span>
+
+                        <span class="receipt-detail-value" id="receipt-merchant">Nakumatt Supermarket</span>
+
+                    </div>
+
+                    <div class="receipt-detail">
+
+                        <span class="receipt-detail-label">Location:</span>
+
+                        <span class="receipt-detail-value" id="receipt-location">Westgate Mall, Nairobi</span>
+
+                    </div>
+
+                    <div class="receipt-detail">
+
+                        <span class="receipt-detail-label">Payment Method:</span>
+
+                        <span class="receipt-detail-value" id="receipt-payment">M-Pesa</span>
+
+                    </div>
+
+                    <div class="receipt-detail">
+
+                        <span class="receipt-detail-label">Items:</span>
+
+                        <span class="receipt-detail-value" id="receipt-items">Groceries & Household</span>
+
+                    </div>
+
+                    <div class="receipt-detail">
+
+                        <span class="receipt-detail-label">VAT:</span>
+
+                        <span class="receipt-detail-value" id="receipt-vat">KSh 450</span>
+
+                    </div>
+
+                    <div class="receipt-total">
+
+                        <span>Total Amount:</span>
+
+                        <span id="receipt-total">KSh 4,750</span>
+
+                    </div>
+
+                </div>
+
+                
+
+                <div style="margin-top: 30px; text-align: center;">
+
+                    <div class="btn btn-outline">
+
+                        <i class="fas fa-print"></i> Print Receipt
+
+                    </div>
+
+                    <div class="btn btn-primary" style="margin-left: 10px;">
+
+                        <i class="fas fa-download"></i> Download PDF
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            
+
+            <div style="text-align: center; color: var(--gray-dark); font-size: 14px;">
+
+                <i class="fas fa-lock"></i> This receipt is read-only and cannot be modified
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div class="footer-column">
+
+                    <h3>REEC</h3>
+
+                    <p>Smart receipt management tailored for Nairobi lifestyle. Securely store all your receipts in one place with advanced security features.</p>
+
+                    <div style="margin-top: 20px; display: flex; gap: 15px;">
+
+                        <a href="#" style="color: white; font-size: 20px;"><i class="fab fa-twitter"></i></a>
+
+                        <a href="#" style="color: white; font-size: 20px;"><i class="fab fa-facebook"></i></a>
+
+                        <a href="#" style="color: white; font-size: 20px;"><i class="fab fa-instagram"></i></a>
+
+                    </div>
+
+                </div>
+
+                
+
+                <div class="footer-column">
+
+                    <h3>Quick Links</h3>
+
+                    <ul class="footer-links">
+
+                        <li class="footer-link"><a href="#">Home</a></li>
+
+                        <li class="footer-link"><a href="#dashboard">Dashboard</a></li>
+
+                        <li class="footer-link"><a href="#upload">Upload Receipt</a></li>
+
+                        <li class="footer-link"><a href="#features">Features</a></li>
+
+                        <li class="footer-link"><a href="#about">About Us</a></li>
+
+                    </ul>
+
+                </div>
+
+                
+
+                <div class="footer-column">
+
+                    <h3>Support</h3>
+
+                    <ul class="footer-links">
+
+                        <li class="footer-link"><a href="#">Help Center</a></li>
+
+                        <li class="footer-link"><a href="#">Privacy Policy</a></li>
+
+                        <li class="footer-link"><a href="#">Terms of Service</a></li>
+
+                        <li class="footer-link"><a href="#">Contact Us</a></li>
+
+                        <li class="footer-link"><a href="#">Browser Extension</a></li>
+
+                    </ul>
+
+                </div>
+
+                
+
+                <div class="footer-column">
+
+                    <h3>Contact</h3>
+
+                    <ul class="footer-links">
+
+                        <li class="footer-link">
+
+                            <i class="fas fa-map-marker-alt" style="margin-right: 10px;"></i>
+
+                            <a href="#">Westlands, Nairobi, Kenya</a>
+
+                        </li>
+
+                        <li class="footer-link">
+
+                            <i class="fas fa-phone" style="margin-right: 10px;"></i>
+
+                            <a href="#">+254 700 123 456</a>
+
+                        </li>
+
+                        <li class="footer-link">
+
+                            <i class="fas fa-envelope" style="margin-right: 10px;"></i>
+
+                            <a href="#">support@reec.co.ke</a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            
+
+            <div class="copyright">
+
+                &copy; 2023 REEC - Receipt Management System. All rights reserved.
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- Scripts -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    <script>
+
+        // Sample data for receipts
+
+        const receipts = [
+
+            { id: 1, type: 'banking', merchant: 'Equity Bank', amount: 'KSh 15,000', date: '2023-10-15', location: 'Nairobi CBD', items: 'Account maintenance fee', payment: 'Bank Transfer' },
+
+            { id: 2, type: 'shopping', merchant: 'Nakumatt Supermarket', amount: 'KSh 4,750', date: '2023-10-12', location: 'Westgate Mall', items: 'Groceries & Household', payment: 'M-Pesa' },
+
+            { id: 3, type: 'school', merchant: 'Strathmore University', amount: 'KSh 85,000', date: '2023-10-10', location: 'Madaraka Estate', items: 'Semester Tuition Fee', payment: 'Bank Deposit' },
+
+            { id: 4, type: 'banking', merchant: 'KCB Bank', amount: 'KSh 50,000', date: '2023-10-08', location: 'Thika Road', items: 'Loan Repayment', payment: 'Cheque' },
+
+            { id: 5, type: 'shopping', merchant: 'SafariCom Shop', amount: 'KSh 1,200', date: '2023-10-05', location: 'Galleria Mall', items: 'Airtime & Data Bundle', payment: 'M-Pesa' },
+
+            { id: 6, type: 'shopping', merchant: 'Carrefour', amount: 'KSh 12,500', date: '2023-10-03', location: 'Two Rivers Mall', items: 'Monthly Shopping', payment: 'Credit Card' },
+
+            { id: 7, type: 'school', merchant: 'Braeburn School', amount: 'KSh 35,000', date: '2023-09-28', location: 'Garden Estate', items: 'Term 3 Fees', payment: 'M-Pesa' },
+
+            { id: 8, type: 'banking', merchant: 'Co-operative Bank', amount: 'KSh 25,000', date: '2023-09-25', location: 'Upper Hill', items: 'Fixed Deposit', payment: 'Bank Transfer' },
+
+            { id: 9, type: 'shopping', merchant: 'Java House', amount: 'KSh 2,350', date: '2023-09-20', location: 'ABC Place', items: 'Coffee & Meals', payment: 'M-Pesa' },
+
+            { id: 10, type: 'other', merchant: 'Shell Petrol Station', amount: 'KSh 3,800', date: '2023-09-18', location: 'Mombasa Road', items: 'Fuel', payment: 'Visa Card' },
+
+            { id: 11, type: 'shopping', merchant: 'Naivas Supermarket', amount: 'KSh 6,450', date: '2023-09-15', location: 'Karen', items: 'Weekly Shopping', payment: 'M-Pesa' },
+
+            { id: 12, type: 'banking', merchant: 'NCBA Bank', amount: 'KSh 10,000', date: '2023-09-10', location: 'Gigiri', items: 'ATM Withdrawal', payment: 'Card' }
+
+        ];
+
+        // DOM Elements
+
+        const authModal = document.getElementById('auth-modal');
+
+        const authBtn = document.getElementById('auth-btn');
+
+        const authClose = document.getElementById('auth-close');
+
+        const receiptModal = document.getElementById('receipt-modal');
+
+        const receiptClose = document.getElementById('receipt-close');
+
+        const uploadArea = document.getElementById('upload-area');
+
+        const uploadBtn = document.getElementById('upload-btn');
+
+        const receiptsContainer = document.getElementById('receipts-container');
+
+        const sidebarLinks = document.querySelectorAll('.sidebar-link');
+
+        const googleAuthBtn = document.getElementById('google-auth-btn');
+
+        const biometricAuthBtn = document.getElementById('biometric-auth-btn');
+
+        const sendOtpBtn = document.getElementById('send-otp-btn');
+
+        const verifyOtpBtn = document.getElementById('verify-otp-btn');
+
+        const otpVerification = document.getElementById('otp-verification');
+
+        const phoneAuthForm = document.getElementById('phone-auth-form');
+
+        const resendOtp = document.getElementById('resend-otp');
+
+        const otpInputs = document.querySelectorAll('.otp-input');
+
+        const userAvatar = document.getElementById('user-avatar');
+
+        const userName = document.getElementById('user-name');
+
+        const userStatus = document.getElementById('user-status');
+
+        
+
+        // App State
+
+        let currentFilter = 'all';
+
+        let isAuthenticated = false;
+
+        let currentUser = null;
+
+        let otpCode = '123456'; // In a real app, this would be generated server-side
+
+        // Initialize Toastr
+
+        toastr.options = {
+
+            positionClass: "toast-top-right",
+
+            progressBar: true,
+
+            closeButton: true,
+
+            timeOut: 5000
+
+        };
+
+        // Initialize the app
+
+        function initApp() {
+
+            renderReceipts();
+
+            setupEventListeners();
+
+            updateUserUI();
+
+        }
+
+        // Set up event listeners
+
+        function setupEventListeners() {
+
+            // Auth modal
+
+            authBtn.addEventListener('click', () => authModal.classList.add('active'));
+
+            authClose.addEventListener('click', () => authModal.classList.remove('active'));
+
+            
+
+            // Receipt modal
+
+            receiptClose.addEventListener('click', () => receiptModal.classList.remove('active'));
+
+            
+
+            // Upload area
+
+            uploadArea.addEventListener('click', simulateUpload);
+
+            uploadBtn.addEventListener('click', simulateUpload);
+
+            
+
+            // Filter receipts by type
+
+            sidebarLinks.forEach(link => {
+
+                link.addEventListener('click', function(e) {
+
+                    e.preventDefault();
+
+                    
+
+                    // Update active link
+
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+
+                    this.classList.add('active');
+
+                    
+
+                    // Filter receipts
+
+                    currentFilter = this.getAttribute('data-filter');
+
+                    renderReceipts();
+
+                });
+
+            });
+
+            
+
+            // Auth buttons
+
+            googleAuthBtn.addEventListener('click', signInWithGoogle);
+
+            biometricAuthBtn.addEventListener('click', signInWithBiometric);
+
+            sendOtpBtn.addEventListener('click', sendOtp);
+
+            verifyOtpBtn.addEventListener('click', verifyOtp);
+
+            resendOtp.addEventListener('click', function(e) {
+
+                e.preventDefault();
+
+                sendOtp();
+
+            });
+
+            
+
+            // OTP input navigation
+
+            otpInputs.forEach(input => {
+
+                input.addEventListener('input', function() {
+
+                    const index = parseInt(this.getAttribute('data-index'));
+
+                    
+
+                    // Move to next input if current one is filled
+
+                    if (this.value.length === 1 && index < 5) {
+
+                        otpInputs[index + 1].focus();
+
+                    }
+
+                });
+
+                
+
+                input.addEventListener('keydown', function(e) {
+
+                    const index = parseInt(this.getAttribute('data-index'));
+
+                    
+
+                    // Move to previous input on backspace if current is empty
+
+                    if (e.key === 'Backspace' && this.value.length === 0 && index > 0) {
+
+                        otpInputs[index - 1].focus();
+
+                    }
+
+                });
+
+            });
+
+            
+
+            // Close modals when clicking outside
+
+            window.addEventListener('click', function(e) {
+
+                if (e.target === authModal) {
+
+                    authModal.classList.remove('active');
+
+                }
+
+                if (e.target === receiptModal) {
+
+                    receiptModal.classList.remove('active');
+
+                }
+
+            });
+
+        }
+
+        // Render receipts based on current filter
+
+        function renderReceipts() {
+
+            // Filter receipts
+
+            let filteredReceipts = receipts;
+
+            if (currentFilter !== 'all') {
+
+                filteredReceipts = receipts.filter(receipt => receipt.type === currentFilter);
+
+            }
+
+            
+
+            // Update counts
+
+            updateReceiptCounts();
+
+            
+
+            // Clear container
+
+            receiptsContainer.innerHTML = '';
+
+            
+
+            // Render receipt cards
+
+            filteredReceipts.forEach(receipt => {
+
+                const card = createReceiptCard(receipt);
+
+                receiptsContainer.appendChild(card);
+
+            });
+
+        }
+
+        // Create a receipt card element
+
+        function createReceiptCard(receipt) {
+
+            const card = document.createElement('div');
+
+            card.className = 'receipt-card';
+
+            
+
+            // Format date for display
+
+            const dateObj = new Date(receipt.date);
+
+            const formattedDate = dateObj.toLocaleDateString('en-GB', { 
+
+                day: 'numeric', 
+
+                month: 'short', 
+
+                year: 'numeric' 
+
+            });
+
+            
+
+            // Get type display name
+
+            const typeNames = {
+
+                banking: 'Banking',
+
+                shopping: 'Shopping',
+
+                school: 'School Fees',
+
+                other: 'Other'
+
+            };
+
+            
+
+            card.innerHTML = `
+
+                <div class="receipt-header">
+
+                    <span class="receipt-type type-${receipt.type}">${typeNames[receipt.type]}</span>
+
+                    <span class="receipt-date">${formattedDate}</span>
+
+                </div>
+
+                <div class="receipt-merchant">${receipt.merchant}</div>
+
+                <div class="receipt-amount">${receipt.amount}</div>
+
+                <div style="color: var(--gray-dark); margin-bottom: 10px;">
+
+                    <i class="fas fa-map-marker-alt"></i> ${receipt.location}
+
+                </div>
+
+                <div style="color: var(--gray-dark); font-size: 14px;">
+
+                    ${receipt.items}
+
+                </div>
+
+                <div class="receipt-actions">
+
+                    <button class="btn btn-outline view-receipt" data-id="${receipt.id}">
+
+                        <i class="fas fa-eye"></i> View
+
+                    </button>
+
+                    <button class="btn btn-outline" style="color: var(--danger);">
+
+                        <i class="fas fa-trash-alt"></i> Delete
+
+                    </button>
+
+                </div>
+
+            `;
+
+            
+
+            // Add event listener to view button
+
+            card.querySelector('.view-receipt').addEventListener('click', function() {
+
+                viewReceipt(receipt.id);
+
+            });
+
+            
+
+            return card;
+
+        }
+
+        // Update receipt counts in sidebar
+
+        function updateReceiptCounts() {
+
+            const counts = {
+
+                all: receipts.length,
+
+                banking: receipts.filter(r => r.type === 'banking').length,
+
+                shopping: receipts.filter(r => r.type === 'shopping').length,
+
+                school: receipts.filter(r => r.type === 'school').length,
+
+                other: receipts.filter(r => r.type === 'other').length
+
+            };
+
+            
+
+            // Update count elements
+
+            Object.keys(counts).forEach(type => {
+
+                const element = document.getElementById(`count-${type}`);
+
+                if (element) {
+
+                    element.textContent = counts[type];
+
+                }
+
+            });
+
+            
+
+            // Update statistics
+
+            document.getElementById('total-receipts').textContent = counts.all;
+
+            
+
+            // Calculate total amount (simplified)
+
+            const totalAmount = receipts.reduce((sum, receipt) => {
+
+                const amount = parseInt(receipt.amount.replace(/[^0-9]/g, ''));
+
+                return sum + (isNaN(amount) ? 0 : amount);
+
+            }, 0);
+
+            
+
+            document.getElementById('total-amount').textContent = `KSh ${totalAmount.toLocaleString()}`;
+
+            document.getElementById('month-amount').textContent = `KSh ${Math.floor(totalAmount / 6).toLocaleString()}`;
+
+        }
+
+        // View receipt details
+
+        function viewReceipt(id) {
+
+            const receipt = receipts.find(r => r.id === id);
+
+            if (!receipt) return;
+
+            
+
+            // Populate modal with receipt data
+
+            document.getElementById('receipt-modal-title').textContent = receipt.merchant;
+
+            document.getElementById('receipt-modal-date').textContent = new Date(receipt.date).toLocaleDateString('en-GB', { 
+
+                weekday: 'long',
+
+                day: 'numeric', 
+
+                month: 'long', 
+
+                year: 'numeric',
+
+                hour: '2-digit',
+
+                minute: '2-digit'
+
+            });
+
+            
+
+            document.getElementById('receipt-id').textContent = `REC-2023-${id.toString().padStart(4, '0')}`;
+
+            document.getElementById('receipt-merchant').textContent = receipt.merchant;
+
+            document.getElementById('receipt-location').textContent = receipt.location;
+
+            document.getElementById('receipt-payment').textContent = receipt.payment;
+
+            document.getElementById('receipt-items').textContent = receipt.items;
+
+            
+
+            // Calculate VAT (simplified)
+
+            const amount = parseInt(receipt.amount.replace(/[^0-9]/g, ''));
+
+            const vat = Math.floor(amount * 0.16);
+
+            document.getElementById('receipt-vat').textContent = `KSh ${vat.toLocaleString()}`;
+
+            document.getElementById('receipt-total').textContent = receipt.amount;
+
+            
+
+            // Show modal
+
+            receiptModal.classList.add('active');
+
+        }
+
+        // Simulate receipt upload
+
+        function simulateUpload() {
+
+            if (!isAuthenticated) {
+
+                toastr.warning('Please sign in to upload receipts');
+
+                authModal.classList.add('active');
+
+                return;
+
+            }
+
+            
+
+            toastr.info('Selecting receipt file...');
+
+            
+
+            // Simulate file selection and upload
+
+            setTimeout(() => {
+
+                // Show success message with SMS notification simulation
+
+                toastr.success('Receipt uploaded successfully! Read-only mode activated.');
+
+                
+
+                // Show SMS notification
+
+                setTimeout(() => {
+
+                    toastr.info('SMS sent: Your receipt has been saved to REEC. It is now read-only.', 'Notification Sent', { timeOut: 6000 });
+
+                }, 1000);
+
+                
+
+                // Add a new receipt to the list (simulated)
+
+                const newReceipt = {
+
+                    id: receipts.length + 1,
+
+                    type: 'shopping',
+
+                    merchant: 'Uchumi Supermarket',
+
+                    amount: 'KSh 3,250',
+
+                    date: new Date().toISOString().split('T')[0],
+
+                    location: 'Nairobi CBD',
+
+                    items: 'Weekly groceries',
+
+                    payment: 'M-Pesa'
+
+                };
+
+                
+
+                receipts.unshift(newReceipt);
+
+                renderReceipts();
+
+            }, 1500);
+
+        }
+
+        // Authentication functions
+
+        function signInWithGoogle() {
+
+            toastr.info('Redirecting to Google authentication...');
+
+            
+
+            // Simulate Google auth
+
+            setTimeout(() => {
+
+                currentUser = {
+
+                    name: 'Grace Wanjiku',
+
+                    email: 'grace@example.com',
+
+                    avatar: 'G'
+
+                };
+
+                
+
+                isAuthenticated = true;
+
+                updateUserUI();
+
+                authModal.classList.remove('active');
+
+                toastr.success('Signed in with Google successfully!');
+
+            }, 1500);
+
+        }
+
+        function signInWithBiometric() {
+
+            toastr.info('Initializing biometric authentication...');
+
+            
+
+            // Simulate biometric auth
+
+            setTimeout(() => {
+
+                // Check if WebAuthn is supported
+
+                if (!window.PublicKeyCredential) {
+
+                    toastr.error('Biometric authentication is not supported on this device');
+
+                    return;
+
+                }
+
+                
+
+                toastr.info('Please authenticate using your fingerprint or face ID...');
+
+                
+
+                // Simulate successful biometric auth
+
+                setTimeout(() => {
+
+                    currentUser = {
+
+                        name: 'John Kamau',
+
+                        email: 'john@example.com',
+
+                        avatar: 'J'
+
+                    };
+
+                    
+
+                    isAuthenticated = true;
+
+                    updateUserUI();
+
+                    authModal.classList.remove('active');
+
+                    toastr.success('Biometric authentication successful!');
+
+                }, 2000);
+
+            }, 1000);
+
+        }
+
+        function sendOtp() {
+
+            const phoneInput = document.getElementById('phone');
+
+            const phone = phoneInput.value.trim();
+
+            
+
+            if (!phone || phone.length < 12) {
+
+                toastr.error('Please enter a valid Kenyan phone number');
+
+                return;
+
+            }
+
+            
+
+            // Simulate sending OTP
+
+            toastr.info(`Sending OTP to ${phone}...`);
+
+            
+
+            setTimeout(() => {
+
+                // Show OTP verification UI
+
+                phoneAuthForm.style.display = 'none';
+
+                otpVerification.style.display = 'block';
+
+                
+
+                // Auto-fill OTP for demo purposes
+
+                setTimeout(() => {
+
+                    otpInputs.forEach((input, index) => {
+
+                        input.value = otpCode[index];
+
+                    });
+
+                }, 500);
+
+                
+
+                toastr.success(`OTP sent to ${phone}`);
+
+            }, 1500);
+
+        }
+
+        function verifyOtp() {
+
+            // Collect OTP digits
+
+            let enteredOtp = '';
+
+            otpInputs.forEach(input => {
+
+                enteredOtp += input.value;
+
+            });
+
+            
+
+            if (enteredOtp.length !== 6) {
+
+                toastr.error('Please enter the 6-digit OTP');
+
+                return;
+
+            }
+
+            
+
+            // Simulate OTP verification
+
+            toastr.info('Verifying OTP...');
+
+            
+
+            setTimeout(() => {
+
+                if (enteredOtp === otpCode) {
+
+                    currentUser = {
+
+                        name: 'David Omondi',
+
+                        email: 'david@example.com',
+
+                        avatar: 'D',
+
+                        phone: document.getElementById('phone').value
+
+                    };
+
+                    
+
+                    isAuthenticated = true;
+
+                    updateUserUI();
+
+                    authModal.classList.remove('active');
+
+                    
+
+                    // Clear OTP inputs
+
+                    otpInputs.forEach(input => input.value = '');
+
+                    
+
+                    // Reset form
+
+                    phoneAuthForm.style.display = 'block';
+
+                    otpVerification.style.display = 'none';
+
+                    
+
+                    toastr.success('OTP verified successfully!');
+
+                } else {
+
+                    toastr.error('Invalid OTP. Please try again.');
+
+                }
+
+            }, 1000);
+
+        }
+
+        // Update user UI based on authentication state
+
+        function updateUserUI() {
+
+            if (isAuthenticated && currentUser) {
+
+                userAvatar.textContent = currentUser.avatar;
+
+                userName.textContent = currentUser.name;
+
+                userStatus.textContent = 'Signed in';
+
+                userStatus.style.color = 'var(--success)';
+
+                authBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Sign Out';
+
+                
+
+                // Change auth button to sign out
+
+                authBtn.removeEventListener('click', () => authModal.classList.add('active'));
+
+                authBtn.addEventListener('click', signOut);
+
+            } else {
+
+                userAvatar.textContent = 'G';
+
+                userName.textContent = 'Guest';
+
+                userStatus.textContent = 'Not signed in';
+
+                userStatus.style.color = 'var(--gray-dark)';
+
+                authBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+
+                
+
+                // Change auth button to sign in
+
+                authBtn.removeEventListener('click', signOut);
+
+                authBtn.addEventListener('click', () => authModal.classList.add('active'));
+
+            }
+
+        }
+
+        // Sign out function
+
+        function signOut() {
+
+            isAuthenticated = false;
+
+            currentUser = null;
+
+            updateUserUI();
+
+            toastr.info('Signed out successfully');
+
+        }
+
+        // Initialize the app when DOM is loaded
+
+        document.addEventListener('DOMContentLoaded', initApp);
+
+    </script>
+
+</body>
+
+</html>
